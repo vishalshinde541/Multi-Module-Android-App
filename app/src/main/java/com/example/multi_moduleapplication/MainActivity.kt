@@ -18,7 +18,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.multi_moduleapplication.ui.theme.MultimoduleApplicationTheme
-import com.example.network.Character
+import com.example.network.models.domain.Character
 import com.example.network.KtorClient
 import com.example.network.TestFile
 import kotlinx.coroutines.delay
