@@ -3,8 +3,10 @@ package com.example.network.models.remote
 import com.example.network.models.domain.Character
 import com.example.network.models.domain.CharacterGender
 import com.example.network.models.domain.CharacterStatus
+import kotlinx.serialization.Serializable
 import java.util.Locale
 
+@Serializable
 data class RemoteCharacter(
     val created: String,
     val episode: List<String>,
@@ -19,11 +21,13 @@ data class RemoteCharacter(
     val type: String,
     val url: String
 ) {
+    @Serializable
     data class Location(
         val name: String,
         val url: String
     )
 
+    @Serializable
     data class Origin(
         val name: String,
         val url: String
