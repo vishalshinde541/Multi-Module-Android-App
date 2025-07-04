@@ -38,9 +38,34 @@ class KtorClient {
 
     }
 
-    suspend fun getCharacter(id: Int): Character {
-        return client.get("character/$id")
-            .body<RemoteCharacter>()
-            .toDomainCharacter()
+    suspend fun getCharacter(id: Int): ApiResponse<Character> {
+        return safeApiCall {
+            client.get("character/$id")
+                .body<RemoteCharacter>()
+                .toDomainCharacter()
+        }
+    }
+
+    private inline fun <T> safeApiCall(apiCall: () -> T): ApiResponse<T> {
+        return try {
+            ApiResponse.Success(data = apiCall())
+        } catch (e: Exception) {
+            ApiResponse.Failure(exception = e)
+        }
+    }
+}
+
+sealed interface ApiResponse<T> {
+    data class Success<T>(val data: T) : ApiResponse<T>
+    data class Failure<T>(val exception: Exception) : ApiResponse<T>
+
+    fun onSuccess(block: (T) -> Unit): ApiResponse<T> {
+        if (this is Success) block(data)
+        return this
+    }
+
+    fun onFailure(block: (Exception) -> Unit): ApiResponse<T> {
+        if (this is Failure) block(exception)
+        return this
     }
 }

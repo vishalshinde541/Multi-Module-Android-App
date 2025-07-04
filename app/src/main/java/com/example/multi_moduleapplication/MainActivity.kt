@@ -32,7 +32,7 @@ class MainActivity : ComponentActivity() {
                             .padding(innerPadding),
                         color = RickPrimary
                     ) {
-                        CharacterDetailsScreen(ktorClient, 125)
+                        CharacterDetailsScreen(ktorClient, 173)
                     }
 
                 }

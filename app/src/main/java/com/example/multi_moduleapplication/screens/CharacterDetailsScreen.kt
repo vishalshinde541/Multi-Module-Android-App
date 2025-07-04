@@ -63,7 +63,13 @@ fun CharacterDetailsScreen(
 
     LaunchedEffect(Unit) {
         delay(500)
-        character = ktorClient.getCharacter(characterId)
+        ktorClient
+            .getCharacter(characterId)
+            .onSuccess { it ->
+                character = it
+            }.onFailure { exception ->
+                // Handle exception here
+            }
     }
 
 
