@@ -1,8 +1,11 @@
 package com.example.network
 
 import com.example.network.models.domain.Character
+import com.example.network.models.domain.Episode
 import com.example.network.models.remote.RemoteCharacter
+import com.example.network.models.remote.RemoteEpisode
 import com.example.network.models.remote.toDomainCharacter
+import com.example.network.models.remote.toDomainEpisode
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.engine.okhttp.OkHttp
@@ -47,6 +50,15 @@ class KtorClient {
                 .body<RemoteCharacter>()
                 .toDomainCharacter()
                 .also { characterCache[id] = it }
+        }
+    }
+
+    suspend fun getEpisodes(episodeIds: List<Int>): ApiResponse<List<Episode>> {
+        val commaSeparatedIds = episodeIds.joinToString(separator = ",")
+        return safeApiCall {
+            client.get("episode/$commaSeparatedIds")
+                .body<List<RemoteEpisode>>()
+                .map { it.toDomainEpisode() }
         }
     }
 

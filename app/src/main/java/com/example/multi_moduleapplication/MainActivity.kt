@@ -19,6 +19,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.multi_moduleapplication.screens.CharacterDetailsScreen
+import com.example.multi_moduleapplication.screens.CharacterEpisodesScreen
 import com.example.multi_moduleapplication.ui.theme.MultimoduleApplicationTheme
 import com.example.multi_moduleapplication.ui.theme.RickAction
 import com.example.multi_moduleapplication.ui.theme.RickPrimary
@@ -60,7 +61,7 @@ class MainActivity : ComponentActivity() {
                             ) { backStackEntry ->
                                 val characterId =
                                     backStackEntry.arguments?.getInt("characterId") ?: -1
-                                CharacterEpisodesScreen(characterID = characterId)
+                                CharacterEpisodesScreen(characterID = characterId, ktorClient = ktorClient)
                             }
                         }
 //                        CharacterDetailsScreen(ktorClient, 173)
@@ -72,9 +73,3 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun CharacterEpisodesScreen(characterID: Int) {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text(text = "Character episode screen : $characterID", fontSize = 28.sp, color = RickAction)
-    }
-}

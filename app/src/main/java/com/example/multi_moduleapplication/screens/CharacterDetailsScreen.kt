@@ -4,7 +4,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -25,16 +24,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil3.compose.AsyncImage
-import coil3.compose.SubcomposeAsyncImage
 import com.example.multi_moduleapplication.components.character.CharacterDetailsNamePlateComponent
+import com.example.multi_moduleapplication.components.common.CharacterImage
 import com.example.multi_moduleapplication.components.common.DataPoint
 import com.example.multi_moduleapplication.components.common.DataPointComponent
 import com.example.multi_moduleapplication.components.common.LoadingState
 import com.example.multi_moduleapplication.ui.theme.RickAction
 import com.example.network.KtorClient
 import com.example.network.models.domain.Character
-import kotlinx.coroutines.delay
 
 @Composable
 fun CharacterDetailsScreen(
@@ -56,7 +53,7 @@ fun CharacterDetailsScreen(
                         add(DataPoint("Type", type))
                     }
                     add(DataPoint("Origin", character.origin.name))
-                    add(DataPoint("Episode count", character.episodeUrls.size.toString()))
+                    add(DataPoint("Episode count", character.episodeIds.size.toString()))
                 }
             }
         }
@@ -96,15 +93,7 @@ fun CharacterDetailsScreen(
 
         //Image
         item {
-            SubcomposeAsyncImage(
-                model = character!!.imageUrl,
-                contentDescription = "Character Image",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(1f)
-                    .clip(RoundedCornerShape(12.dp)),
-                loading = { LoadingState() }
-            )
+            CharacterImage(imageUrl = character!!.imageUrl)
         }
 
         item { Spacer(modifier = Modifier.height(32.dp)) }
