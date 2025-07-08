@@ -8,7 +8,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -24,6 +26,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.multi_moduleapplication.components.common.CharacterImage
 import com.example.multi_moduleapplication.components.common.CharacterNameComponent
+import com.example.multi_moduleapplication.components.common.DataPoint
+import com.example.multi_moduleapplication.components.common.DataPointComponent
 import com.example.multi_moduleapplication.components.common.LoadingState
 import com.example.multi_moduleapplication.components.episode.EpisodeRowComponent
 import com.example.multi_moduleapplication.ui.theme.RickPrimary
@@ -62,12 +66,32 @@ fun CharacterEpisodesScreen(characterID: Int, ktorClient: KtorClient) {
 
 @Composable
 fun MainScreen(character: Character, episodes: List<Episode>) {
+    val episodeBySeasonMap = episodes.groupBy { it.seasonNumber }
+
     LazyColumn(contentPadding = PaddingValues(16.dp)) {
         item { CharacterNameComponent(character.name) }
+        item { Spacer(modifier = Modifier.height(8.dp)) }
+        item {
+            LazyRow {
+                episodeBySeasonMap.forEach { mapEntry ->
+                    val title = "Season ${mapEntry.key}"
+                    val description = "${mapEntry.value.size} ep"
+                    item {
+                        DataPointComponent(
+                            dataPoint = DataPoint(
+                                title = title,
+                                description = description
+                            )
+                        )
+                    }
+                    item { Spacer(modifier = Modifier.width(32.dp)) }
+                }
+            }
+        }
         item { Spacer(modifier = Modifier.height(16.dp)) }
         item { CharacterImage(character.imageUrl) }
 
-        episodes.groupBy { it.seasonNumber }.forEach { mapEntry ->
+        episodeBySeasonMap.forEach { mapEntry ->
             stickyHeader { SeasonHeader(seasonNumber = mapEntry.key) }
             items(mapEntry.value) { episode ->
                 EpisodeRowComponent(episode = episode)
@@ -78,9 +102,12 @@ fun MainScreen(character: Character, episodes: List<Episode>) {
 
 @Composable
 private fun SeasonHeader(seasonNumber: Int) {
-    Row(modifier = Modifier.fillMaxWidth()
-        .background(color = RickPrimary)
-        .padding(top = 8.dp, bottom = 16.dp)) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(color = RickPrimary)
+            .padding(top = 8.dp, bottom = 16.dp)
+    ) {
         Text(
             text = "Season $seasonNumber",
             color = RickTextPrimary,
@@ -93,7 +120,8 @@ private fun SeasonHeader(seasonNumber: Int) {
                     width = 1.dp,
                     color = RickTextPrimary,
                     shape = RoundedCornerShape(8.dp)
-                ).padding(vertical = 8.dp)
+                )
+                .padding(vertical = 8.dp)
         )
     }
 
