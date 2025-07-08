@@ -53,12 +53,26 @@ class KtorClient {
         }
     }
 
-    suspend fun getEpisodes(episodeIds: List<Int>): ApiResponse<List<Episode>> {
-        val commaSeparatedIds = episodeIds.joinToString(separator = ",")
+    suspend fun getEpisode(episodeId: Int): ApiResponse<Episode> {
         return safeApiCall {
-            client.get("episode/$commaSeparatedIds")
-                .body<List<RemoteEpisode>>()
-                .map { it.toDomainEpisode() }
+            client.get("episode/$episodeId")
+                .body<RemoteEpisode>()
+                .toDomainEpisode()
+        }
+    }
+
+    suspend fun getEpisodes(episodeIds: List<Int>): ApiResponse<List<Episode>> {
+        return if (episodeIds.size == 1) {
+            getEpisode(episodeIds[0]).mapSuccess { episode ->
+                listOf(episode)
+            }
+        } else {
+            val commaSeparatedIds = episodeIds.joinToString(separator = ",")
+            safeApiCall {
+                client.get("episode/$commaSeparatedIds")
+                    .body<List<RemoteEpisode>>()
+                    .map { it.toDomainEpisode() }
+            }
         }
     }
 
@@ -74,6 +88,13 @@ class KtorClient {
 sealed interface ApiResponse<T> {
     data class Success<T>(val data: T) : ApiResponse<T>
     data class Failure<T>(val exception: Exception) : ApiResponse<T>
+
+    fun <R> mapSuccess(transform: (T) -> (R)): ApiResponse<R> {
+        return when (this) {
+            is Success -> Success(transform(data))
+            is Failure -> Failure(exception)
+        }
+    }
 
     fun onSuccess(block: (T) -> Unit): ApiResponse<T> {
         if (this is Success) block(data)
