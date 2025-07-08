@@ -24,10 +24,14 @@ import com.example.multi_moduleapplication.ui.theme.MultimoduleApplicationTheme
 import com.example.multi_moduleapplication.ui.theme.RickAction
 import com.example.multi_moduleapplication.ui.theme.RickPrimary
 import com.example.network.KtorClient
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    val ktorClient = KtorClient()
+    @Inject
+    lateinit var ktorClient : KtorClient
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        enableEdgeToEdge()
