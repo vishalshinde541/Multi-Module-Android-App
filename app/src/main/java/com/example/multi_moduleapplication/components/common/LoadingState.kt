@@ -8,12 +8,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.multi_moduleapplication.ui.theme.RickAction
 
-private val defaultModifier = Modifier
+private val defaultModifierLoadingState = Modifier
     .fillMaxSize()
     .padding(all = 128.dp)
 
 @Composable
-fun LoadingState(modifier: Modifier = defaultModifier) {
+fun LoadingState(modifier: Modifier = defaultModifierLoadingState) {
     CircularProgressIndicator(
         modifier = modifier,
         color = RickAction

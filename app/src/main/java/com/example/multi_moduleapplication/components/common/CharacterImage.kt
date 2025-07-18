@@ -10,16 +10,20 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import coil3.compose.SubcomposeAsyncImage
 
+val defaultModifier = Modifier
+    .fillMaxWidth()
+    .aspectRatio(1f)
+    .clip(RoundedCornerShape(12.dp))
+
 @Composable
-fun CharacterImage(imageUrl: String) {
+fun CharacterImage(
+    imageUrl: String, modifier: Modifier = defaultModifier
+) {
     Box {
         SubcomposeAsyncImage(
             model = imageUrl,
             contentDescription = "Character Image",
-            modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(1f)
-                .clip(RoundedCornerShape(12.dp)),
+            modifier = modifier,
             loading = { LoadingState() }
         )
     }

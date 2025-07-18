@@ -46,7 +46,7 @@ class MainActivity : ComponentActivity() {
                             startDestination = "character_details"
                         ) {
                             composable("character_details") {
-                                CharacterDetailsScreen( 114) {
+                                CharacterDetailsScreen( 1) {
                                     navController.navigate("character_episodes/$it")
                                 }
                             }

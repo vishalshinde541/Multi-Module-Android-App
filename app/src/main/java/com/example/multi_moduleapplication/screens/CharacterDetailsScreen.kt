@@ -3,11 +3,13 @@ package com.example.multi_moduleapplication.screens
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -23,6 +25,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.multi_moduleapplication.components.character.CharacterDetailsNamePlateComponent
+import com.example.multi_moduleapplication.components.character.CharacterGridItem
+import com.example.multi_moduleapplication.components.character.CharacterListItem
 import com.example.multi_moduleapplication.components.common.CharacterImage
 import com.example.multi_moduleapplication.components.common.DataPoint
 import com.example.multi_moduleapplication.components.common.DataPointComponent
@@ -69,6 +73,31 @@ fun CharacterDetailsScreen(
             }
 
             is CharacterDetailsViewState.Success -> {
+
+                item {
+                    Row(modifier = Modifier.fillMaxWidth()) {
+                        CharacterGridItem(
+                            modifier = Modifier.weight(1f),
+                            character = viewState.character
+                        ) { }
+                        Spacer(modifier = Modifier.width(16.dp))
+                        CharacterGridItem(
+                            modifier = Modifier.weight(1f),
+                            character = viewState.character
+                        ) { }
+                    }
+
+                }
+
+                repeat(10){
+                    item{ Spacer(modifier = Modifier.height(16.dp))}
+                    item{
+                        CharacterListItem(
+                            character = viewState.character,
+                            characterDataPoints = viewState.characterDataPoints
+                        ) { }
+                    }
+                }
 
                 item {
                     CharacterDetailsNamePlateComponent(
