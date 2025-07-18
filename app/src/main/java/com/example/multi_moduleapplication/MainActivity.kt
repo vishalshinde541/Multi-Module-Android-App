@@ -1,6 +1,7 @@
 package com.example.multi_moduleapplication
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -32,6 +33,7 @@ class MainActivity : ComponentActivity() {
 //        enableEdgeToEdge()
         setContent {
         val navController = rememberNavController()
+            val TAG = "ComposableFLow"
 
             MultimoduleApplicationTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -48,13 +50,17 @@ class MainActivity : ComponentActivity() {
                         ) {
 
                             composable("home_screen") {
-                                HomeScreen(characterSelected = {
-
+                                HomeScreen(characterSelected = { characterId ->
+                                    navController.navigate("character_details/$characterId")
                                 })
                             }
 
-                            composable("character_details") {
-                                CharacterDetailsScreen( 1) {
+                            composable(route = "character_details/{characterId}",
+                                arguments = listOf(navArgument("characterId"){
+                                    type = NavType.IntType
+                                })) { backStackEntry ->
+                                val characterId = backStackEntry.arguments?.getInt("characterId") ?: -1
+                                CharacterDetailsScreen( characterId = characterId) {
                                     navController.navigate("character_episodes/$it")
                                 }
                             }

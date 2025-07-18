@@ -74,30 +74,30 @@ fun CharacterDetailsScreen(
 
             is CharacterDetailsViewState.Success -> {
 
-                item {
-                    Row(modifier = Modifier.fillMaxWidth()) {
-                        CharacterGridItem(
-                            modifier = Modifier.weight(1f),
-                            character = viewState.character
-                        ) { }
-                        Spacer(modifier = Modifier.width(16.dp))
-                        CharacterGridItem(
-                            modifier = Modifier.weight(1f),
-                            character = viewState.character
-                        ) { }
-                    }
-
-                }
-
-                repeat(10){
-                    item{ Spacer(modifier = Modifier.height(16.dp))}
-                    item{
-                        CharacterListItem(
-                            character = viewState.character,
-                            characterDataPoints = viewState.characterDataPoints
-                        ) { }
-                    }
-                }
+//                item {
+//                    Row(modifier = Modifier.fillMaxWidth()) {
+//                        CharacterGridItem(
+//                            modifier = Modifier.weight(1f),
+//                            character = viewState.character
+//                        ) { }
+//                        Spacer(modifier = Modifier.width(16.dp))
+//                        CharacterGridItem(
+//                            modifier = Modifier.weight(1f),
+//                            character = viewState.character
+//                        ) { }
+//                    }
+//
+//                }
+//
+//                repeat(10){
+//                    item{ Spacer(modifier = Modifier.height(16.dp))}
+//                    item{
+//                        CharacterListItem(
+//                            character = viewState.character,
+//                            characterDataPoints = viewState.characterDataPoints
+//                        ) { }
+//                    }
+//                }
 
                 item {
                     CharacterDetailsNamePlateComponent(
