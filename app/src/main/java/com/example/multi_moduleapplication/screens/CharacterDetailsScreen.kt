@@ -2,6 +2,7 @@ package com.example.multi_moduleapplication.screens
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -31,6 +32,7 @@ import com.example.multi_moduleapplication.components.common.CharacterImage
 import com.example.multi_moduleapplication.components.common.DataPoint
 import com.example.multi_moduleapplication.components.common.DataPointComponent
 import com.example.multi_moduleapplication.components.common.LoadingState
+import com.example.multi_moduleapplication.components.common.SimpleToolbar
 import com.example.multi_moduleapplication.ui.theme.RickAction
 import com.example.multi_moduleapplication.viewmodels.CharacterDetailsViewModel
 import com.example.network.models.domain.Character
@@ -49,7 +51,8 @@ sealed interface CharacterDetailsViewState {
 fun CharacterDetailsScreen(
     characterId: Int,
     viewModel: CharacterDetailsViewModel = hiltViewModel(),
-    onEpisodeClicked: (Int) -> Unit
+    onEpisodeClicked: (Int) -> Unit,
+    onBackClicked: () -> Unit
 ) {
 
     LaunchedEffect(Unit) {
@@ -58,21 +61,23 @@ fun CharacterDetailsScreen(
 
     val state by viewModel.stateFlow.collectAsState()
 
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(all = 16.dp)
-    ) {
+    Column {
+        SimpleToolbar(title = "Character details", onBackAction = onBackClicked)
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(all = 16.dp)
+        ) {
 
-        when (val viewState = state) {
-            is CharacterDetailsViewState.Loading -> {
-                item { LoadingState() }
-            }
+            when (val viewState = state) {
+                is CharacterDetailsViewState.Loading -> {
+                    item { LoadingState() }
+                }
 
-            is CharacterDetailsViewState.Error -> {
+                is CharacterDetailsViewState.Error -> {
 
-            }
+                }
 
-            is CharacterDetailsViewState.Success -> {
+                is CharacterDetailsViewState.Success -> {
 
 //                item {
 //                    Row(modifier = Modifier.fillMaxWidth()) {
@@ -99,60 +104,63 @@ fun CharacterDetailsScreen(
 //                    }
 //                }
 
-                item {
-                    CharacterDetailsNamePlateComponent(
-                        name = viewState.character.name,
-                        characterStatus = viewState.character.status
-                    )
+                    item {
+                        CharacterDetailsNamePlateComponent(
+                            name = viewState.character.name,
+                            characterStatus = viewState.character.status
+                        )
+                    }
+
+                    item { Spacer(modifier = Modifier.height(8.dp)) }
+
+                    //Image
+                    item {
+                        CharacterImage(imageUrl = viewState.character.imageUrl)
+                    }
+
+                    item { Spacer(modifier = Modifier.height(32.dp)) }
+
+                    //Data Point
+                    items(viewState.characterDataPoints) {
+                        Spacer(modifier = Modifier.height(32.dp))
+                        DataPointComponent(dataPoint = it)
+                    }
+
+                    item { Spacer(modifier = Modifier.height(32.dp)) }
+
+                    // Button
+                    item {
+                        Text(
+                            text = "View all episodes",
+                            color = RickAction,
+                            fontSize = 18.sp,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .padding(horizontal = 32.dp)
+                                .border(
+                                    width = 1.dp,
+                                    color = RickAction,
+                                    shape = RoundedCornerShape(12.dp)
+                                )
+                                .clip(RoundedCornerShape(12.dp))
+                                .clickable { onEpisodeClicked(characterId) }
+                                .padding(vertical = 8.dp)
+                                .fillMaxWidth()
+                        )
+                    }
+
+                    item { Spacer(modifier = Modifier.height(64.dp)) }
                 }
-
-                item { Spacer(modifier = Modifier.height(8.dp)) }
-
-                //Image
-                item {
-                    CharacterImage(imageUrl = viewState.character.imageUrl)
-                }
-
-                item { Spacer(modifier = Modifier.height(32.dp)) }
-
-                //Data Point
-                items(viewState.characterDataPoints) {
-                    Spacer(modifier = Modifier.height(32.dp))
-                    DataPointComponent(dataPoint = it)
-                }
-
-                item { Spacer(modifier = Modifier.height(32.dp)) }
-
-                // Button
-                item {
-                    Text(
-                        text = "View all episodes",
-                        color = RickAction,
-                        fontSize = 18.sp,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .padding(horizontal = 32.dp)
-                            .border(
-                                width = 1.dp,
-                                color = RickAction,
-                                shape = RoundedCornerShape(12.dp)
-                            )
-                            .clip(RoundedCornerShape(12.dp))
-                            .clickable { onEpisodeClicked(characterId) }
-                            .padding(vertical = 8.dp)
-                            .fillMaxWidth()
-                    )
-                }
-
-                item { Spacer(modifier = Modifier.height(64.dp)) }
             }
+
+
+            //Name plate
+
+
         }
-
-
-        //Name plate
-
-
     }
+
+
 
 
 }

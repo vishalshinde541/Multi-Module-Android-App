@@ -27,12 +27,12 @@ import javax.inject.Inject
 class MainActivity : ComponentActivity() {
 
     @Inject
-    lateinit var ktorClient : KtorClient
+    lateinit var ktorClient: KtorClient
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        enableEdgeToEdge()
         setContent {
-        val navController = rememberNavController()
+            val navController = rememberNavController()
             val TAG = "ComposableFLow"
 
             MultimoduleApplicationTheme {
@@ -55,13 +55,19 @@ class MainActivity : ComponentActivity() {
                                 })
                             }
 
-                            composable(route = "character_details/{characterId}",
-                                arguments = listOf(navArgument("characterId"){
+                            composable(
+                                route = "character_details/{characterId}",
+                                arguments = listOf(navArgument("characterId") {
                                     type = NavType.IntType
-                                })) { backStackEntry ->
-                                val characterId = backStackEntry.arguments?.getInt("characterId") ?: -1
-                                CharacterDetailsScreen( characterId = characterId) {
-                                    navController.navigate("character_episodes/$it")
+                                })
+                            ) { backStackEntry ->
+                                val characterId =
+                                    backStackEntry.arguments?.getInt("characterId") ?: -1
+                                CharacterDetailsScreen(
+                                    characterId = characterId,
+                                    onEpisodeClicked = { navController.navigate("character_episodes/$it") }
+                                ) {
+                                    navController.navigateUp()
                                 }
                             }
                             composable(
@@ -73,7 +79,13 @@ class MainActivity : ComponentActivity() {
                             ) { backStackEntry ->
                                 val characterId =
                                     backStackEntry.arguments?.getInt("characterId") ?: -1
-                                CharacterEpisodesScreen(characterID = characterId, ktorClient = ktorClient)
+                                CharacterEpisodesScreen(
+                                    characterID = characterId,
+                                    ktorClient = ktorClient,
+                                    onBackClicked = {
+                                        navController.navigateUp()
+                                    }
+                                )
                             }
                         }
 //                        CharacterDetailsScreen(ktorClient, 173)
