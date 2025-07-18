@@ -15,6 +15,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.multi_moduleapplication.screens.CharacterDetailsScreen
 import com.example.multi_moduleapplication.screens.CharacterEpisodesScreen
+import com.example.multi_moduleapplication.screens.HomeScreen
 import com.example.multi_moduleapplication.ui.theme.MultimoduleApplicationTheme
 import com.example.multi_moduleapplication.ui.theme.RickPrimary
 import com.example.network.KtorClient
@@ -43,8 +44,15 @@ class MainActivity : ComponentActivity() {
                     ) {
                         NavHost(
                             navController = navController,
-                            startDestination = "character_details"
+                            startDestination = "home_screen"
                         ) {
+
+                            composable("home_screen") {
+                                HomeScreen(characterSelected = {
+
+                                })
+                            }
+
                             composable("character_details") {
                                 CharacterDetailsScreen( 1) {
                                     navController.navigate("character_episodes/$it")

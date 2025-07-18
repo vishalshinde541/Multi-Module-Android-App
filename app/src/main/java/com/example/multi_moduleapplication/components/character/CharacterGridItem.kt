@@ -25,7 +25,7 @@ import com.example.network.models.domain.CharacterStatus
 
 @Composable
 fun CharacterGridItem(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     character: Character,
     onClick: () -> Unit
 ) {
