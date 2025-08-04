@@ -37,6 +37,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.multi_moduleapplication.screens.AllEpisodesScreen
 import com.example.multi_moduleapplication.screens.CharacterDetailsScreen
 import com.example.multi_moduleapplication.screens.CharacterEpisodesScreen
 import com.example.multi_moduleapplication.screens.HomeScreen
@@ -186,10 +187,8 @@ fun AppNavigation(
         composable(route = NavDestinations.Episodes.route) {
             Column(
                 modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(text = "Episodes", fontSize = 62.sp, color = RickAction)
+                AllEpisodesScreen()
             }
         }
 
