@@ -41,6 +41,7 @@ import com.example.multi_moduleapplication.screens.AllEpisodesScreen
 import com.example.multi_moduleapplication.screens.CharacterDetailsScreen
 import com.example.multi_moduleapplication.screens.CharacterEpisodesScreen
 import com.example.multi_moduleapplication.screens.HomeScreen
+import com.example.multi_moduleapplication.screens.SearchScreen
 import com.example.multi_moduleapplication.ui.theme.MultimoduleApplicationTheme
 import com.example.multi_moduleapplication.ui.theme.RickAction
 import com.example.multi_moduleapplication.ui.theme.RickPrimary
@@ -195,10 +196,8 @@ fun AppNavigation(
         composable(route = NavDestinations.Search.route) {
             Column(
                 modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(text = "Search", fontSize = 62.sp, color = RickAction)
+                SearchScreen()
             }
         }
     }
